@@ -1,0 +1,148 @@
+﻿@page
+@model CosmicFood.Pages.Admin.MenuItems.UpsertModel
+@{
+}
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+
+    <div class="container">
+        <div class="row px-2 mx-2 backgroundWhite border">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (Model.MenuItems.Menu.Id != 0)
+            {
+                <input type="hidden" asp-for="MenuItems.Menu.Id" />
+            }
+
+            <div class="col-12 px-3" style="border-bottom:1px solid #325d88">
+                <h2 class="text-primary">@(Model.MenuItems.Menu.Id != 0 ? "Update" : "Create") Menu Item</h2>
+            </div>
+
+            <div class="col-sm-8 pt-3">
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="MenuItems.Menu.Name"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" asp-for="MenuItems.Menu.Name" />
+                        <span class="text-danger" asp-validation-for="MenuItems.Menu.Name"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="MenuItems.Menu.Price"></label>
+                    </div>
+                    <div class="col-9">
+                        <input class="form-control" asp-for="MenuItems.Menu.Price" />
+                        <span class="text-danger" asp-validation-for="MenuItems.Menu.Price"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="MenuItems.Menu.Description"></label>
+                    </div>
+                    <div class="col-9">
+                        <textarea class="form-control" asp-for="MenuItems.Menu.Description" id="txtDesc" style="height:200px;"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="MenuItems.Menu.Image"></label>
+                    </div>
+                    <div class="col-9">
+                        <input type="file" class="form-control" name="files" id="uploadBox" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="MenuItems.Menu.CategoryId"></label>
+                    </div>
+                    @try
+                    {
+                        <div class="col-9">
+                            @Html.DropDownListFor(m => m.MenuItems.Menu.CategoryId,
+                                                    Model.MenuItems.CategoryList,
+                                                    "- Please select a Category -",
+                                                    new { @class = "form-control" })
+                            <span class="text-danger" asp-validation-for="MenuItems.Menu.CategoryId"></span>
+                        </div>
+                    }
+                    catch (Exception ex)
+                    {
+                        <p>@ex.Message</p>
+                    }
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="MenuItems.Menu.FoodTypeId"></label>
+                    </div>
+                    @try
+                    {
+                        <div class="col-9">
+                            @Html.DropDownListFor(m => m.MenuItems.Menu.FoodTypeId,
+                                                    Model.MenuItems.FoodTypeList,
+                                                    "- Please select a Food Type -",
+                                                    new { @class = "form-control" })
+                            <span class="text-danger" asp-validation-for="MenuItems.Menu.FoodTypeId"></span>
+                        </div>
+                    }
+                    catch (Exception ex)
+                    {
+                        <p>@ex.Message</p>
+                    }
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-9 offset-3">
+                        <div class="row">
+                            <div class="col-6">
+
+                                @if (Model.MenuItems.Menu.Id != 0)
+                                {
+                                    <button type="submit" class="btn btn-primary form-control">Update</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" onclick="return ValidateInput()" class="btn btn-primary form-control">Create</button>
+                                }
+
+                            </div>
+                            <div class="col-6">
+                                <a asp-page="./Index" class="btn btn-success form-control">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.MenuItems.Menu != null)
+            {
+                <div class="col-4 p-4">
+                    <img src="@Model.MenuItems.Menu.Image" width="100" style="border-radius:5px; border:1px solid #bbb9b9" />
+                </div>
+            }
+
+
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: "lists",
+            menubar: 'file edit format'
+        });
+        function ValidateInput() {
+            if (document.getElementById("uploadBox").value == "") {
+                swal("Error", "Please complete the form", "error")
+                return false;
+            }
+            return true;
+        };
+    </script>
+
+
+}
+

@@ -1,0 +1,40 @@
+﻿@page
+@model CosmicFood.Pages.Customer.Home.IndexModel
+@{
+}
+
+<h1 class="offsets text-center"></h1>
+
+<hr />
+
+<div class="container">
+    <div>
+        <div class="card-columns">
+            @foreach (var category in Model.CategoriesList)
+            {
+                @if (Model.MenuItemsList.Where(c => c.CategoryId == category.Id).Count() > 0)
+                {
+
+
+                    @foreach (var item in Model.MenuItemsList.Where(m => m.CategoryId == category.Id))
+                    {
+                        <div class="card">
+                            <img class="card-img-top" src="@item.Image" />
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.Description</p>
+                                <p class="text-right">$@item.Price</p>
+                                <hr />
+                                <a asp-page="Details" class="btn btn-primary" style="border-radius:2px" asp-route-id="@item.Id">Details</a>
+                            </div>
+                        </div>
+
+                    }
+
+
+                }
+
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿@page
+@model CosmicFood.Pages.Admin.Order.OrderListModel
+@{
+}
+@{
+    var status = HttpContext.Request.Query["status"];
+    var Cancelled = "text-primary";
+    var Completed = "text-primary";
+    var inProcess = "text-primary";
+
+    if (status == "Cancelled")
+    {
+        Cancelled = "active text-white";
+    }
+    else
+    {
+        if (status == "Completed")
+        {
+            Completed = "active text-white";
+        }
+        else
+        {
+            inProcess = "active text-white";
+        }
+    }
+
+}
+<div class="border backgroundWhite container">
+    <div class="d-flex justify-content-between mb-3">
+        <div class="p-2">
+            <h2 class="text-primary">Orders List</h2>
+            <hr />
+        </div>
+        <div class="p-2">
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration:none;" asp-page="OrderList" asp-route-status="Cancelled">
+                    <li class="list-group-item" @Cancelled> Cancelled</li>
+                </a>
+                <a style="text-decoration:none;" asp-page="OrderList" asp-route-status="Completed">
+                    <li class="list-group-item" @Completed> Completed</li>
+                </a>
+                <a style="text-decoration:none;" asp-page="OrderList" asp-route-status="inProcess">
+                    <li class="list-group-item" @inProcess> In Process</li>
+                </a>
+            </ul>
+        </div>
+    </div>
+    <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>OrderTotal</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/orderlist.js"></script>
+}
